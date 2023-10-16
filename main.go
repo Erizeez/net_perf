@@ -190,17 +190,17 @@ func runPing(ping_bin string, ip string, ping_time int) PingStat {
 		Entry: stat_entry,
 	}
 
-	stat_re := regexp.MustCompile(`(\d+) packets transmitted, (\d+) packets received, ([\d.]+)% packet loss\nround-trip min/avg/max/stddev = ([\d.]+)/([\d.]+)/([\d.]+)/([\d.]+) ms`)
+	stat_re := regexp.MustCompile(`(\d+) packets transmitted, (\d+) received, (\d+)% packet loss, time (\d+)ms\nrtt min/avg/max/mdev = ([\d.]+)/([\d.]+)/([\d.]+)/([\d.]+) ms`)
 
 	match := stat_re.FindStringSubmatch(string(output))
 	if len(match) > 0 {
 		transmitted := match[1]
 		received := match[2]
 		loss := match[3]
-		min := match[4]
-		avg := match[5]
-		max := match[6]
-		stddev := match[7]
+		min := match[5]
+		avg := match[6]
+		max := match[7]
+		stddev := match[8]
 
 		stats.Transmit, err = strconv.ParseInt(transmitted, 10, 64)
 		if err != nil {
